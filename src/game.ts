@@ -45,11 +45,27 @@ export function update(dt: number) {
   if (state.clicked) {
     state.clicked = false;
     state.dir *= -1;
-    state.target.angle = Math.random() * Math.PI * 2;
-    state.target.timeAlive = 0;
-    state.score += 1;
     state.shakeFactor = 1;
-    state.timeToProcess -= hitStun;
+
+    const playerPos = {
+      x: gameSize.width / 2 + Math.cos(state.player.angle) * innerCircleRadius,
+      y: gameSize.height / 2 + Math.sin(state.player.angle) * innerCircleRadius,
+    };
+    const targetPos = {
+      x: gameSize.width / 2 + Math.cos(state.target.angle) * innerCircleRadius,
+      y: gameSize.height / 2 + Math.sin(state.target.angle) * innerCircleRadius,
+    };
+    const distance = Math.hypot(
+      playerPos.x - targetPos.x,
+      playerPos.y - targetPos.y,
+    );
+
+    if (distance <= targetRadius * 2) {
+      state.target.angle = Math.random() * Math.PI * 2;
+      state.target.timeAlive = 0;
+      state.score += 1;
+      state.timeToProcess -= hitStun;
+    }
   }
 
   state.timeToProcess += dt;
@@ -94,6 +110,24 @@ export function draw(ctx: CanvasRenderingContext2D) {
     gameSize.height / 2 + Math.sin(state.target.angle) * innerCircleRadius,
     targetRadius *
       Math.min(1, (state.target.timeAlive / targetFullSizeTime) ** 2),
+  );
+  ctx.fillStyle = "white";
+  fillCircle(
+    ctx,
+    gameSize.width / 2 + Math.cos(state.target.angle) * innerCircleRadius,
+    gameSize.height / 2 + Math.sin(state.target.angle) * innerCircleRadius,
+    targetRadius *
+      Math.min(1, (state.target.timeAlive / targetFullSizeTime) ** 2) *
+      0.66,
+  );
+  ctx.fillStyle = "red";
+  fillCircle(
+    ctx,
+    gameSize.width / 2 + Math.cos(state.target.angle) * innerCircleRadius,
+    gameSize.height / 2 + Math.sin(state.target.angle) * innerCircleRadius,
+    targetRadius *
+      Math.min(1, (state.target.timeAlive / targetFullSizeTime) ** 2) *
+      0.33,
   );
 
   ctx.fillStyle = "blue";

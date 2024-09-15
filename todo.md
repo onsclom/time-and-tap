@@ -1,0 +1,4 @@
+- particle effects
+- good screenshake
+- sounds
+- good shareable stats?

@@ -5,6 +5,8 @@ goal:
 
 to do:
 - particle effects
-- good screenshake
+X good screenshake
 - sounds
 - good shareable stats?
+- score each attempt: perfect/awesome/ok/close call
+  - give more points for better scores
